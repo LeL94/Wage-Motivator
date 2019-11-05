@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.updateWageButton);
         final EditText dailyNetText = findViewById(R.id.dailyNetText);
+        button.setVisibility(View.INVISIBLE); /////////////////////////// TODO settings for wage
+        dailyNetText.setVisibility(View.INVISIBLE);
 
 
         // Load wage with shared preferences
@@ -77,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
                     gain = dailyNet/28800 * (totSecond-3600);
 
                 else if (hour >= 18 && hour < 24) { // sera
-                    remainingTimeText.setText(0 + " : " + 0 + " : " + 0);
+                    remainingTimeText.setText("00 : 00 : 00");
                     gain = dailyNet;
                 }
 
                 else { // da mezzanotte alle 9
-                    remainingTimeText.setText(8 + " : " + 0 + " : " + 0);
+                    remainingTimeText.setText("08 : 00 : 00");
                     gain = 0;
                 }
 
