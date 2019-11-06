@@ -4,24 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".SettingsActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <Button
-        android:id="@+id/updateWageButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/saveSettingsButton"
+        android:layout_width="70sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/autour_one"
-        android:text="Update"
+        android:text="Save"
         android:textColor="#000000"
-        app:layout_constraintStart_toEndOf="@+id/dailyNetText"
-        app:layout_constraintTop_toTopOf="@+id/dailyNetText" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/dailyNetText"
+        android:id="@+id/wageEditText"
         android:layout_width="55sp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:ems="10"
         android:fontFamily="@font/autour_one"
         android:inputType="textPersonName"
@@ -31,16 +34,127 @@
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
+    <EditText
+        android:id="@+id/startingEditText"
+        android:layout_width="55sp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/autour_one"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/wageEditText"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/finishingEditText"
+        android:layout_width="55sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ems="10"
+        android:fontFamily="@font/autour_one"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/startingEditText" />
+
+    <EditText
+        android:id="@+id/lunchBreakStartEditText"
+        android:layout_width="55sp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/autour_one"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/startingEditText"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+    <EditText
+        android:id="@+id/lunchBreakFinishEditText"
+        android:layout_width="55sp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/autour_one"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/lunchBreakStartEditText"
+        app:layout_constraintStart_toStartOf="@+id/finishingEditText"
+        app:layout_constraintTop_toTopOf="@+id/lunchBreakStartEditText" />
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/autour_one"
-        android:text="My daily wage:"
+        android:text="Daily wage:"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Working hours:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Lunch break:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/autour_one"
+        android:text="-"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/startingEditText"
+        app:layout_constraintStart_toEndOf="@+id/startingEditText"
+        app:layout_constraintTop_toTopOf="@+id/startingEditText" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/autour_one"
+        android:text="-"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/lunchBreakStartEditText"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/lunchBreakStartEditText" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/autour_one"
+        android:text="€"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/wageEditText"
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,6 @@ public class WeekendActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        // do nothing
     }
 }

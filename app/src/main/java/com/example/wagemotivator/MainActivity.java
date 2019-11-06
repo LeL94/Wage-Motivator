@@ -2,31 +2,20 @@ package com.example.wagemotivator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import java.util.Calendar;
 import android.os.*;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String SHARED_PREFS = "sharedPrefs";
-    private static final String DAILY_NET = "dailyNet";
 
 
     @Override
@@ -37,9 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // Load wage with shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        final double dailyNet = Double.parseDouble(sharedPreferences.getString(DAILY_NET, Double.toString(0)));
+        final SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
 
 
         // Variables
@@ -47,13 +34,12 @@ public class MainActivity extends AppCompatActivity {
         final TextView gainText = findViewById(R.id.gainText);
         final DecimalFormat df2 = new DecimalFormat("##.###");
 
-
         // Timer
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
 
-                setTimeAndGain(remainingTimeText, gainText, df2, dailyNet);
+                setTimeAndGain(sharedPreferences, remainingTimeText, gainText, df2);
 
                 handler.postDelayed(this, 1000);
             }
@@ -62,37 +48,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setTimeAndGain(TextView remainingTimeText, TextView gainText, DecimalFormat df2, double dailyNet) {
+    public void setTimeAndGain(SharedPreferences sharedPreferences, TextView remainingTimeText, TextView gainText, DecimalFormat df2) {
+
+        double dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
+        int startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
+        int finishingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_HOUR, "18"));
+        int lunchBreakStart = Integer.parseInt(sharedPreferences.getString(SharedConst.LUNCH_BREAK_START, "13"));
+        int lunchBreakFinish = Integer.parseInt(sharedPreferences.getString(SharedConst.LUNCH_BREAK_FINISH, "14"));
+        int workingTimeInSeconds = (finishingHour - startingHour - (lunchBreakFinish-lunchBreakStart)) * 3600;
+        int lunchBreakInSeconds = (lunchBreakFinish-lunchBreakStart) * 3600;
+
         // Get time
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        int totSecond = (hour-9)*3600 + minute*60 + second;
+        int timeElapsedInSecond = (hour-startingHour)*3600 + minute*60 + second;
 
         // Remaining time
-        int remainingHour = 17 - hour;
+        int remainingHour = (finishingHour-1) - hour;
         int remainingMinute = 59 - minute;
         int remainingSecond = 59 - second;
         remainingTimeText.setText(remainingHour + " : " + remainingMinute + " : " + remainingSecond);
 
-        // Guadagno
-        double gain = 0;
-        if (hour == 13) // pausa pranzo
-            gain = dailyNet/28800 * 14400;
+        // Gain
+        double gain;
+        if (hour >= lunchBreakStart && hour <= lunchBreakFinish) // lunch break
+            gain = dailyWage/workingTimeInSeconds * (lunchBreakStart-startingHour)*3600;
 
-        else if (hour >= 9 && hour < 13) // mattino
-            gain = dailyNet/28800 * totSecond;
+        else if (hour >= startingHour && hour < lunchBreakStart) // morning
+            gain = dailyWage/workingTimeInSeconds * timeElapsedInSecond;
 
-        else if (hour > 13 && hour < 18) // pomeriggio
-            gain = dailyNet/28800 * (totSecond-3600);
+        else if (hour >= lunchBreakFinish && hour < finishingHour) // afternoon
+            gain = dailyWage/workingTimeInSeconds * (timeElapsedInSecond-lunchBreakInSeconds);
 
-        else if (hour >= 18 && hour < 24) { // sera
+        else if (hour >= finishingHour) { // evening
             remainingTimeText.setText("00 : 00 : 00");
-            gain = dailyNet;
+            gain = dailyWage;
         }
 
-        else { // da mezzanotte alle 9
+        else { // midnight to 9
             remainingTimeText.setText("08 : 00 : 00");
             gain = 0;
         }
@@ -108,19 +103,29 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.item1:
-                //Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+            case R.id.item_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 return true;
-            case R.id.item2:
+
+            case R.id.item_share:
                 Toast.makeText(this, "...work in progress...", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.item3:
-                Toast.makeText(this, "...work in progress...", Toast.LENGTH_SHORT).show();
+
+            case R.id.item_about_us:
+                Toast.makeText(this, "...working on it...", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item_contact_us:
+                Toast.makeText(this, "...coming soon...", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item_report_bug:
+                Toast.makeText(this, "This app is bugless, NYEH NYEH", Toast.LENGTH_LONG).show();
                 return true;
         }
 
@@ -128,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void checkDay() {
+    public void checkDay() { // check if weekend
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        if (day == calendar.SATURDAY || day == calendar.SUNDAY) {
+        if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
             startActivity(new Intent(MainActivity.this, WeekendActivity.class));
         }
     }
