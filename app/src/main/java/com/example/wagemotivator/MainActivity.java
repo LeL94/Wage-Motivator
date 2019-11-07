@@ -13,6 +13,9 @@ import android.widget.TextView;
 import java.util.Calendar;
 import android.os.*;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 
 
@@ -35,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
         final TextView gainText = findViewById(R.id.gainText);
         final DecimalFormat df2 = new DecimalFormat("##.###");
         final ProgressBar progressBar = findViewById(R.id.progressBar);
+        final TextView tvPercentage = findViewById(R.id.tvPercentage);
 
         // Timer
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
 
-                setTimeAndGain(sharedPreferences, remainingTimeText, gainText, df2, progressBar);
+                setTimeAndGain(sharedPreferences, remainingTimeText, gainText, df2, progressBar, tvPercentage);
 
                 handler.postDelayed(this, 1000);
             }
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setTimeAndGain(SharedPreferences sharedPreferences, TextView remainingTimeText, TextView gainText,
-                               DecimalFormat df2, ProgressBar progressBar) {
+                               DecimalFormat df2, ProgressBar progressBar, TextView tvPercentage) {
 
         double dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
         int startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
@@ -68,9 +72,8 @@ public class MainActivity extends AppCompatActivity {
         int second = calendar.get(Calendar.SECOND);
         int elapsedTimeInSeconds = (hour-startingHour)*3600 + minute*60 + second;
 
-        // Progress bar
+        // Progress bar counter
         int counter = 100*elapsedTimeInSeconds/(workingTimeInSeconds+lunchBreakInSeconds);
-        progressBar.setProgress(counter);
 
         // Remaining time
         int remainingHour = (finishingHour-1) - hour;
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Gain
         double gain;
-        if (hour >= lunchBreakStart && hour <= lunchBreakFinish) // lunch break
+        if (hour >= lunchBreakStart && hour < lunchBreakFinish) // lunch break
             gain = dailyWage/workingTimeInSeconds * (lunchBreakStart-startingHour)*3600;
 
         else if (hour >= startingHour && hour < lunchBreakStart) // morning
@@ -92,14 +95,18 @@ public class MainActivity extends AppCompatActivity {
         else if (hour >= finishingHour) { // evening
             remainingTimeText.setText("00 : 00 : 00");
             gain = dailyWage;
+            counter = 100;
         }
 
         else { // midnight to 9
             remainingTimeText.setText("08 : 00 : 00");
             gain = 0;
+            counter = 0;
         }
 
         gainText.setText(df2.format(gain));
+        progressBar.setProgress(counter);
+        tvPercentage.setText(counter+"%");
     }
 
 
