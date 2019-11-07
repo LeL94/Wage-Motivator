@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.Calendar;
 import android.os.*;
@@ -33,13 +34,14 @@ public class MainActivity extends AppCompatActivity {
         final TextView remainingTimeText = findViewById(R.id.remainingTimeText);
         final TextView gainText = findViewById(R.id.gainText);
         final DecimalFormat df2 = new DecimalFormat("##.###");
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
 
         // Timer
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
 
-                setTimeAndGain(sharedPreferences, remainingTimeText, gainText, df2);
+                setTimeAndGain(sharedPreferences, remainingTimeText, gainText, df2, progressBar);
 
                 handler.postDelayed(this, 1000);
             }
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setTimeAndGain(SharedPreferences sharedPreferences, TextView remainingTimeText, TextView gainText, DecimalFormat df2) {
+    public void setTimeAndGain(SharedPreferences sharedPreferences, TextView remainingTimeText, TextView gainText,
+                               DecimalFormat df2, ProgressBar progressBar) {
 
         double dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
         int startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
@@ -63,7 +66,11 @@ public class MainActivity extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        int timeElapsedInSecond = (hour-startingHour)*3600 + minute*60 + second;
+        int elapsedTimeInSeconds = (hour-startingHour)*3600 + minute*60 + second;
+
+        // Progress bar
+        int counter = 100*elapsedTimeInSeconds/(workingTimeInSeconds+lunchBreakInSeconds);
+        progressBar.setProgress(counter);
 
         // Remaining time
         int remainingHour = (finishingHour-1) - hour;
@@ -77,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
             gain = dailyWage/workingTimeInSeconds * (lunchBreakStart-startingHour)*3600;
 
         else if (hour >= startingHour && hour < lunchBreakStart) // morning
-            gain = dailyWage/workingTimeInSeconds * timeElapsedInSecond;
+            gain = dailyWage/workingTimeInSeconds * elapsedTimeInSeconds;
 
         else if (hour >= lunchBreakFinish && hour < finishingHour) // afternoon
-            gain = dailyWage/workingTimeInSeconds * (timeElapsedInSecond-lunchBreakInSeconds);
+            gain = dailyWage/workingTimeInSeconds * (elapsedTimeInSeconds-lunchBreakInSeconds);
 
         else if (hour >= finishingHour) { // evening
             remainingTimeText.setText("00 : 00 : 00");
