@@ -79,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
         int remainingHour = (finishingHour-1) - hour;
         int remainingMinute = 59 - minute;
         int remainingSecond = 59 - second;
-        remainingTimeText.setText(remainingHour + " : " + remainingMinute + " : " + remainingSecond);
+        remainingTimeText.setText(
+                remainingHour + " : " + String.format("%02d", remainingMinute) + " : " + String.format("%02d", remainingSecond));
 
         // Gain
         double gain;
@@ -104,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
             counter = 0;
         }
 
-        gainText.setText(df2.format(gain));
+        //gainText.setText(df2.format(gain));
+        gainText.setText(String.format("%.3f", gain));
         progressBar.setProgress(counter);
         tvPercentage.setText(counter+"%");
     }

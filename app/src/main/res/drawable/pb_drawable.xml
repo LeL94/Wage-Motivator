@@ -2,15 +2,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/pb_background">
-
         <shape>
-
-
             <gradient
                 android:angle="-90"
-                android:startColor="#757575"
                 android:centerColor="#616161"
-                android:endColor="#424242" />
+                android:endColor="#424242"
+                android:startColor="#757575" />
 
             <size
                 android:width="15dp"
@@ -21,30 +18,26 @@
     </item>
 
     <item android:id="@+id/pb_progress">
-
         <clip>
-
             <layer-list>
-
                 <item
                     android:bottom="2dp"
                     android:left="2dp"
-                    android:top="2dp"
-                    android:right="2dp">
+                    android:right="2dp"
+                    android:top="2dp">
 
                     <shape>
+                        <!-- TODO bar starts red and finishes green -->
                         <gradient
                             android:angle="-90"
-                            android:startColor="#4caf50"
                             android:centerColor="#43a047"
-                            android:endColor="#388e3c" />
+                            android:endColor="#388e3c"
+                            android:startColor="#4caf50" />
 
                         <corners android:radius="4dp" />
 
                     </shape>
-
                 </item>
-
             </layer-list>
         </clip>
     </item>
