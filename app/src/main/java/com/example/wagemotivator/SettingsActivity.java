@@ -1,14 +1,10 @@
 package com.example.wagemotivator;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +12,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -37,8 +32,6 @@ public class SettingsActivity extends AppCompatActivity {
         final TextView tvStartingMinute = findViewById(R.id.tvStartingMinute);
         final TextView tvFinishingHour = findViewById(R.id.tvFinishingHour);
         final TextView tvFinishingMinute = findViewById(R.id.tvFinishingMinute);
-        final EditText lunchBreakStartText = findViewById(R.id.lunchBreakStartEditText);
-        final EditText lunchBreakFinishText = findViewById(R.id.lunchBreakFinishEditText);
 
 
         // Initialize text views
@@ -47,8 +40,6 @@ public class SettingsActivity extends AppCompatActivity {
         tvStartingMinute.setText(sharedPreferences.getString(SharedConst.STARTING_MINUTE, "00"));
         tvFinishingHour.setText(sharedPreferences.getString(SharedConst.FINISHING_HOUR, "18"));
         tvFinishingMinute.setText(sharedPreferences.getString(SharedConst.FINISHING_MINUTE, "00"));
-        lunchBreakStartText.setText(sharedPreferences.getString(SharedConst.LUNCH_BREAK_START, "13"));
-        lunchBreakFinishText.setText(sharedPreferences.getString(SharedConst.LUNCH_BREAK_FINISH, "14"));
 
 
         // Edit starting hour
@@ -109,8 +100,6 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putString(SharedConst.STARTING_MINUTE, tvStartingMinute.getText().toString());
                 editor.putString(SharedConst.FINISHING_HOUR, tvFinishingHour.getText().toString());
                 editor.putString(SharedConst.FINISHING_MINUTE, tvFinishingMinute.getText().toString());
-                editor.putString(SharedConst.LUNCH_BREAK_START, lunchBreakStartText.getText().toString());
-                editor.putString(SharedConst.LUNCH_BREAK_FINISH, lunchBreakFinishText.getText().toString());
 
                 editor.apply();
 
