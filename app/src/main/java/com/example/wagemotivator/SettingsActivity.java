@@ -11,27 +11,33 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import java.util.Objects;
 
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private EditText wageEditText;
+    private TextView tvStartingHour;
+    private TextView tvStartingMinute;
+    private TextView tvFinishingHour;
+    private TextView tvFinishingMinute;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        getSupportActionBar().setTitle("Settings");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Settings");
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
-
-
-        // Get text views
-        final EditText wageEditText = findViewById(R.id.wageEditText);
-        final TextView tvStartingHour = findViewById(R.id.tvStartingHour);
-        final TextView tvStartingMinute = findViewById(R.id.tvStartingMinute);
-        final TextView tvFinishingHour = findViewById(R.id.tvFinishingHour);
-        final TextView tvFinishingMinute = findViewById(R.id.tvFinishingMinute);
+        // Assign attributes
+        wageEditText = findViewById(R.id.wageEditText);
+        tvStartingHour = findViewById(R.id.tvStartingHour);
+        tvStartingMinute = findViewById(R.id.tvStartingMinute);
+        tvFinishingHour = findViewById(R.id.tvFinishingHour);
+        tvFinishingMinute = findViewById(R.id.tvFinishingMinute);
+        sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
 
 
         // Initialize text views
@@ -50,8 +56,6 @@ public class SettingsActivity extends AppCompatActivity {
                 TimePickerDialog.OnTimeSetListener timePickerListener1 = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
-                        TextView tvStartingHour = findViewById(R.id.tvStartingHour);
-                        TextView tvStartingMinute = findViewById(R.id.tvStartingMinute);
                         tvStartingHour.setText(Integer.toString(hour));
                         tvStartingMinute.setText(String.format("%02d", minute));
                     }
@@ -71,8 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
                 TimePickerDialog.OnTimeSetListener timePickerListener2 = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
-                        TextView tvFinishingHour = findViewById(R.id.tvFinishingHour);
-                        TextView tvFinishingMinute = findViewById(R.id.tvFinishingMinute);
                         tvFinishingHour.setText(Integer.toString(hour));
                         tvFinishingMinute.setText(String.format("%02d", minute));
                     }
@@ -90,9 +92,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // TODO check if legal input
-
-                SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.putString(SharedConst.DAILY_WAGE, wageEditText.getText().toString());

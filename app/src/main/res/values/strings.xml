@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Wage Motivator</string>
+    <string name="btn_save">Save</string>
+    <string name="daily_wage">Daily wage:</string>
+    <string name="starting_at">Starting at:</string>
+    <string name="finishing_at">Finishing at:</string>
+    <string name="euro_symbol">€</string>
+    <string name="time_to_finish">Time to finish:</string>
+    <string name="today_i_earned">Today I earned:</string>
 </resources>

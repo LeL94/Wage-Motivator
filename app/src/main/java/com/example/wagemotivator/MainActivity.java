@@ -2,7 +2,6 @@ package com.example.wagemotivator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,11 +16,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.*;
 import android.widget.Toast;
-
 import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private SharedPreferences sharedPreferences;
+    private TextView tvRemainingTime;
+    private TextView gainText;
+    private ProgressBar progressBar;
+    private TextView tvPercentage;
 
 
     @Override
@@ -32,36 +36,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        final SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
+        // Assign attributes
+        sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
+        tvRemainingTime = findViewById(R.id.tvRemainingTime);
+        gainText = findViewById(R.id.gainText);
+        progressBar = findViewById(R.id.progressBar);
+        tvPercentage = findViewById(R.id.tvPercentage);
 
-
-        // Variables
-        final TextView tvRemainingTime = findViewById(R.id.tvRemainingTime);
-        final TextView gainText = findViewById(R.id.gainText);
-        final ProgressBar progressBar = findViewById(R.id.progressBar);
-        final TextView tvPercentage = findViewById(R.id.tvPercentage);
 
         // Timer
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
-
                 try {
-                    setTimeAndGain(sharedPreferences, tvRemainingTime, gainText, progressBar, tvPercentage);
+                    setTimeAndGain();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
                 handler.postDelayed(this, 1000);
             }
         }, 0);
-
     }
 
 
     @SuppressLint("DefaultLocale")
-    public void setTimeAndGain(SharedPreferences sharedPreferences, TextView tvRemainingTime, TextView gainText,
-                               ProgressBar progressBar, TextView tvPercentage) throws ParseException {
+    public void setTimeAndGain() throws ParseException {
 
         double dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
         int startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
@@ -82,9 +81,13 @@ public class MainActivity extends AppCompatActivity {
         int counter = 100*elapsedTimeInSeconds/totalWorkingTimeInSeconds;
 
         // Remaining time
-        int remainingHour = finishingHour - currentHour;
-        int remainingMinute = 59 - currentMinute;
+        int remainingHour = finishingHour - currentHour - 1;
+        int remainingMinute = finishingMinute - currentMinute - 1;
         int remainingSecond = 59 - currentSecond;
+
+        if (remainingHour < 0)
+            remainingHour = 0;
+
         @SuppressLint("DefaultLocale")
         String remainingTime = remainingHour + " : " + String.format("%02d", remainingMinute) + " : " + String.format("%02d", remainingSecond);
         tvRemainingTime.setText(remainingTime);

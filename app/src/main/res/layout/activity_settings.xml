@@ -15,7 +15,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/autour_one"
-        android:text="Daily wage:"
+        android:text="@string/daily_wage"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Starting at:"
+        android:text="@string/starting_at"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Finishing at:"
+        android:text="@string/finishing_at"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/textView"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/autour_one"
-            android:text="€"
+            android:text="@string/euro_symbol"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -97,7 +97,7 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:layout_weight="1"
             android:text=":"
             android:textColor="#000000"
@@ -117,7 +117,7 @@
             android:id="@+id/btnEditStartingHour"
             android:layout_width="20sp"
             android:layout_height="20sp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/ic_edit_black_24dp"
             android:textColor="#00000000" />
     </LinearLayout>
@@ -144,7 +144,7 @@
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:layout_weight="1"
             android:text=":"
             android:textColor="#000000"
@@ -164,7 +164,7 @@
             android:id="@+id/btnEditFinishingHour"
             android:layout_width="20sp"
             android:layout_height="20sp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/ic_edit_black_24dp" />
     </LinearLayout>
 
@@ -174,7 +174,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:fontFamily="@font/autour_one"
-        android:text="Save"
+        android:text="@string/btn_save"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
