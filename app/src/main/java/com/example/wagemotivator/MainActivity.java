@@ -21,11 +21,18 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SharedPreferences sharedPreferences;
     private TextView tvRemainingTime;
     private TextView gainText;
     private ProgressBar progressBar;
     private TextView tvPercentage;
+
+    double dailyWage;
+    int startingHour;
+    int startingMinute;
+    int finishingHour;
+    int finishingMinute;
+    int totalWorkingTimeInSeconds;
+    int remainingTimeInSeconds;
 
 
     @Override
@@ -36,12 +43,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // Assign attributes
-        sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
+        // Get references from layout
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         tvRemainingTime = findViewById(R.id.tvRemainingTime);
         gainText = findViewById(R.id.gainText);
         progressBar = findViewById(R.id.progressBar);
         tvPercentage = findViewById(R.id.tvPercentage);
+
+        // Initialize
+        dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
+        startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
+        startingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_MINUTE, "0"));
+        finishingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_HOUR, "18"));
+        finishingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_MINUTE, "0"));
+        // (finishingHour*3600 + finishingMinute*60) - (startingHour*3600 + startingMinute*60);
+        totalWorkingTimeInSeconds = (finishingHour-startingHour)*3600 + (finishingMinute-startingMinute)*60;
 
 
         // Timer
@@ -62,31 +78,23 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     public void setTimeAndGain() throws ParseException {
 
-        double dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
-        int startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
-        int startingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_MINUTE, "0"));
-        int finishingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_HOUR, "18"));
-        int finishingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_MINUTE, "0"));
-        //int totalWorkingTimeInSeconds = (finishingHour*3600 + finishingMinute*60) - (startingHour*3600 + startingMinute*60);
-        int totalWorkingTimeInSeconds = (finishingHour-startingHour)*3600 + (finishingMinute-startingMinute)*60;
 
         // Get time
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = calendar.get(Calendar.MINUTE);
         int currentSecond = calendar.get(Calendar.SECOND);
-        int elapsedTimeInSeconds = (currentHour-startingHour)*3600 + currentMinute*60 + currentSecond;
+        int elapsedTimeInSeconds = (currentHour-startingHour)*3600 + (currentMinute-startingMinute)*60 + currentSecond;
 
         // Progress bar counter
         int counter = 100*elapsedTimeInSeconds/totalWorkingTimeInSeconds;
 
         // Remaining time
-        int remainingHour = finishingHour - currentHour - 1;
-        int remainingMinute = finishingMinute - currentMinute - 1;
-        int remainingSecond = 59 - currentSecond;
+        remainingTimeInSeconds = totalWorkingTimeInSeconds - elapsedTimeInSeconds;
+        int remainingHour = remainingTimeInSeconds / 3600;
+        int remainingMinute = (remainingTimeInSeconds % 3600) / 60;
+        int remainingSecond = (remainingTimeInSeconds % 3600) % 60;
 
-        if (remainingHour < 0)
-            remainingHour = 0;
 
         @SuppressLint("DefaultLocale")
         String remainingTime = remainingHour + " : " + String.format("%02d", remainingMinute) + " : " + String.format("%02d", remainingSecond);
@@ -121,7 +129,11 @@ public class MainActivity extends AppCompatActivity {
 
         // if work is to begin
         else {
-            tvRemainingTime.setText("09 : 00 : 00");
+            remainingHour = totalWorkingTimeInSeconds / 3600;
+            remainingMinute = (totalWorkingTimeInSeconds % 3600) / 60;
+            tvRemainingTime.setText(
+                    String.format("%02d", remainingHour) + " : " +
+                    String.format("%02d", remainingMinute) + " : 00");
             gain = 0;
             counter = 0;
         }
