@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -158,28 +159,48 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
+            // SETTINGS
             case R.id.item_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 return true;
 
+            // SHARE
             case R.id.item_share:
                 Toast.makeText(this, "...work in progress...", Toast.LENGTH_SHORT).show();
                 return true;
 
-            case R.id.item_about_us:
-                Toast.makeText(this, "...working on it...", Toast.LENGTH_SHORT).show();
-                return true;
-
+            // CONTACT US
             case R.id.item_contact_us:
-                Toast.makeText(this, "...coming soon...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "...coming soon...", Toast.LENGTH_SHORT).show();
+                contactUs();
                 return true;
 
+            // REPORT BUG
             case R.id.item_report_bug:
                 Toast.makeText(this, "This app is bugless, NYEH NYEH", Toast.LENGTH_LONG).show();
+                return true;
+
+            // ABOUT US
+            case R.id.item_about:
+                Toast.makeText(this, "...working on it...", Toast.LENGTH_SHORT).show();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void contactUs() {
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:wage.motivator@gmail.com"));
+
+        try {
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

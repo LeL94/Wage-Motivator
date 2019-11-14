@@ -10,15 +10,15 @@
         android:title="Share"
         app:showAsAction="never" />
 
-    <item android:id="@+id/item_about_us"
-        android:title="About Us"
-        app:showAsAction="never" />
-
     <item android:id="@+id/item_contact_us"
         android:title="Contact Us"
         app:showAsAction="never" />
 
     <item android:id="@+id/item_report_bug"
         android:title="Report Bug"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/item_about"
+        android:title="About"
         app:showAsAction="never" />
 </menu>
