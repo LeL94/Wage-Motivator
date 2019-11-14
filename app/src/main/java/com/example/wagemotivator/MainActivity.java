@@ -19,6 +19,9 @@ import android.widget.Toast;
 import java.util.Date;
 
 
+// TODO background dinamico: mentre si sta guadagnando piovono soldi, altrimenti sfondo statico
+
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvRemainingTime;
@@ -26,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView tvPercentage;
 
-    double dailyWage;
-    int startingHour;
-    int startingMinute;
-    int finishingHour;
-    int finishingMinute;
-    int totalWorkingTimeInSeconds;
-    int remainingTimeInSeconds;
+    private double dailyWage;
+    private int startingHour;
+    private int startingMinute;
+    private int finishingHour;
+    private int finishingMinute;
+    private int totalWorkingTimeInSeconds;
 
 
     @Override
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         int counter = 100*elapsedTimeInSeconds/totalWorkingTimeInSeconds;
 
         // Remaining time
-        remainingTimeInSeconds = totalWorkingTimeInSeconds - elapsedTimeInSeconds;
+        int remainingTimeInSeconds = totalWorkingTimeInSeconds - elapsedTimeInSeconds;
         int remainingHour = remainingTimeInSeconds / 3600;
         int remainingMinute = (remainingTimeInSeconds % 3600) / 60;
         int remainingSecond = (remainingTimeInSeconds % 3600) % 60;
