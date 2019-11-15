@@ -21,8 +21,6 @@ import android.widget.Toast;
 import java.util.Date;
 
 
-// TODO background dinamico: mentre si sta guadagnando piovono soldi, altrimenti sfondo statico
-
 
 public class MainActivity extends AppCompatActivity {
 
