@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -105,26 +106,29 @@ public class MainActivity extends AppCompatActivity {
 
         // Timer
         Date date = new Date();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         dateFormat.format(date);
 
         Date currentTimeFormatted = dateFormat.parse(dateFormat.format(date));
         @SuppressLint("DefaultLocale")
-        Date startingTimeFormatted = dateFormat.parse(String.format("%02d", startingHour) + ":" + String.format("%02d", startingMinute));
+        Date startingTimeFormatted = dateFormat.parse(String.format("%02d", startingHour) + ":" +String.format("%02d", startingMinute) + ": 00");
         @SuppressLint("DefaultLocale")
-        Date finishingTimeFormatted = dateFormat.parse(String.format("%02d", finishingHour) + ":" + String.format("%02d", finishingMinute));
+        Date finishingTimeFormatted = dateFormat.parse(String.format("%02d", finishingHour) + ":" + String.format("%02d", finishingMinute) + ": 00");
 
         double gain;
+        int compareStarting = currentTimeFormatted.compareTo(startingTimeFormatted); // compareStarting < 0 if currentTime < startingTime
+        int compareFinishing = currentTimeFormatted.compareTo(finishingTimeFormatted);
+
+        //Log.d("MainActivity", "compareStarting: " + compareStarting);
+        //Log.d("MainActivity", "compareFinishing: " + compareFinishing);
 
         // if it is working time
-        assert currentTimeFormatted != null;
-        if(currentTimeFormatted.after(startingTimeFormatted)
-                & currentTimeFormatted.before(finishingTimeFormatted)) {
+        if(compareStarting >0 & compareFinishing < 0) {
             gain = dailyWage/totalWorkingTimeInSeconds * elapsedTimeInSeconds;
         }
 
         // if work is over
-        else if (currentTimeFormatted.after(finishingTimeFormatted)) {
+        else if (compareFinishing >= 0) {
             tvRemainingTime.setText("00 : 00 : 00");
             gain = dailyWage;
             counter = 100;
