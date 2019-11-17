@@ -1,11 +1,8 @@
 package com.example.wagemotivator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.os.Bundle;
 
-public class WeekendActivity extends AppCompatActivity {
+public class WeekendActivity extends MyBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

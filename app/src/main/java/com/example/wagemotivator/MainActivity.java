@@ -1,15 +1,10 @@
 package com.example.wagemotivator;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,11 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.*;
 import android.widget.Toast;
+
 import java.util.Date;
 import java.util.Random;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MyBaseActivity {
 
     private TextView tvRemainingTime;
     private TextView gainText;
@@ -39,12 +35,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //checkDay();
+        checkDay();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
+        initialize();
+
+        runTimer();
+
+
+        ConstraintLayout cl = findViewById(R.id.clProgressBar);
+        cl.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.animate().rotation(0).setDuration(420);
+                return true;
+            }
+        });
+
+    }
+
+
+    private void initialize() {
         // Get references from layout
         SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         tvRemainingTime = findViewById(R.id.tvRemainingTime);
@@ -60,9 +74,11 @@ public class MainActivity extends AppCompatActivity {
         finishingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_MINUTE, "0"));
         // (finishingHour*3600 + finishingMinute*60) - (startingHour*3600 + startingMinute*60);
         totalWorkingTimeInSeconds = (finishingHour-startingHour)*3600 + (finishingMinute-startingMinute)*60;
+    }
 
 
-        // Timer
+    private void runTimer() {
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
@@ -149,69 +165,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            // SETTINGS
-            case R.id.item_settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                return true;
-
-            // SHARE
-            case R.id.item_share:
-                Toast.makeText(this, "...work in progress...", Toast.LENGTH_SHORT).show();
-                return true;
-
-            // CONTACT US
-            case R.id.item_contact_us:
-                //Toast.makeText(this, "...coming soon...", Toast.LENGTH_SHORT).show();
-                contactUs();
-                return true;
-
-            // REPORT BUG
-            case R.id.item_report_bug:
-                Toast.makeText(this, "This app is bugless, NYEH NYEH", Toast.LENGTH_LONG).show();
-                return true;
-
-            // ABOUT US
-            case R.id.item_about:
-                Toast.makeText(this, "...working on it...", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public void contactUs() {
-
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:wage.motivator@gmail.com"));
-
-        try {
-            startActivity(intent);
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
 
     public void checkDay() { // check if weekend
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
-            startActivity(new Intent(MainActivity.this, WeekendActivity.class));
+
+        SharedPreferences sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
+        boolean workingWeekend = Boolean.parseBoolean(sp.getString(SharedConst.WORKING_WEEKEND, "false"));
+        
+        if(!workingWeekend) {
+
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+                finish();
+                startActivity(new Intent(MainActivity.this, WeekendActivity.class));
+            }
         }
+
     }
 
 

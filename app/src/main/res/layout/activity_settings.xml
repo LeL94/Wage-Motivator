@@ -43,6 +43,17 @@
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Weekend:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
     <LinearLayout
         android:id="@+id/llWage"
         android:layout_width="wrap_content"
@@ -115,11 +126,12 @@
             tools:text="00" />
 
         <Button
-            android:id="@+id/btnEditStartingHour"
+            android:id="@+id/btnEditStartingTime"
             android:layout_width="20sp"
             android:layout_height="20sp"
             android:layout_marginStart="20dp"
             android:background="@drawable/ic_edit_black_24dp"
+            android:onClick="editStartingTime"
             android:textColor="#00000000" />
     </LinearLayout>
 
@@ -162,23 +174,34 @@
             tools:text="00" />
 
         <Button
-            android:id="@+id/btnEditFinishingHour"
+            android:id="@+id/btnEditFinishingTime"
             android:layout_width="20sp"
             android:layout_height="20sp"
             android:layout_marginStart="20dp"
-            android:background="@drawable/ic_edit_black_24dp" />
+            android:background="@drawable/ic_edit_black_24dp"
+            android:onClick="editFinishingTime" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/saveSettingsButton"
-        android:layout_width="70sp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:id="@+id/btnSaveSettings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/save_button"
         android:fontFamily="@font/autour_one"
-        android:text="@string/btn_save"
+        android:onClick="saveSettings"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/swWeekend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="@+id/llFinishingHour"
+        app:layout_constraintTop_toTopOf="@+id/textView8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
