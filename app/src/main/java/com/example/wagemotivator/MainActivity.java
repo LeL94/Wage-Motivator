@@ -12,8 +12,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.*;
-import android.widget.Toast;
-
+import com.example.wagemotivator.util.MyBaseActivity;
+import com.example.wagemotivator.util.SharedConst;
 import java.util.Date;
 import java.util.Random;
 
@@ -170,7 +170,7 @@ public class MainActivity extends MyBaseActivity {
 
         SharedPreferences sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         boolean workingWeekend = Boolean.parseBoolean(sp.getString(SharedConst.WORKING_WEEKEND, "false"));
-        
+
         if(!workingWeekend) {
 
             Calendar calendar = Calendar.getInstance();

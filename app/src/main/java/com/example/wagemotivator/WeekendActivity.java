@@ -2,6 +2,8 @@ package com.example.wagemotivator;
 
 import android.os.Bundle;
 
+import com.example.wagemotivator.util.MyBaseActivity;
+
 public class WeekendActivity extends MyBaseActivity {
 
     @Override

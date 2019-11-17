@@ -1,4 +1,4 @@
-package com.example.wagemotivator;
+package com.example.wagemotivator.util;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,9 +6,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.wagemotivator.R;
+import com.example.wagemotivator.SettingsActivity;
+
 
 public class MyBaseActivity extends AppCompatActivity {
 
