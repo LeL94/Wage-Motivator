@@ -34,6 +34,7 @@ public class MainActivity extends BaseActivity {
     private int finishingHour;
     private int finishingMinute;
     private int totalWorkingTimeInSeconds;
+
     private static int clicksOnProgressBar = 0;
     private static boolean brokenProgressBar = false;
 
@@ -208,7 +209,7 @@ public class MainActivity extends BaseActivity {
         view.animate().translationYBy(-2000).setDuration(300);
 
         tvBrokenPb = findViewById(R.id.tvBrokenPb);
-        tvBrokenPb.animate().alpha(1).setDuration(3000);
+        tvBrokenPb.animate().alpha(1).setDuration(2000);
         brokenProgressBar = true;
     }
 
