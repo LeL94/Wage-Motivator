@@ -12,4 +12,6 @@
     <string name="contact_us">Contact Us</string>
     <string name="report_bug">Report Bug</string>
     <string name="about">About</string>
+    <string name="weekend">Weekend:</string>
+    <string name="you_broke_the_progress_bar">You BRoKe thE pRoGreSS bAR!!</string>
 </resources>

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +15,8 @@ import java.util.Calendar;
 import android.os.*;
 import com.example.wagemotivator.util.MyBaseActivity;
 import com.example.wagemotivator.util.SharedConst;
+
+
 import java.util.Date;
 import java.util.Random;
 
@@ -24,6 +27,8 @@ public class MainActivity extends MyBaseActivity {
     private TextView gainText;
     private ProgressBar progressBar;
     private TextView tvPercentage;
+    private TextView tvBrokenPb;
+    private ConstraintLayout clProgressBar;
 
     private double dailyWage;
     private int startingHour;
@@ -31,6 +36,8 @@ public class MainActivity extends MyBaseActivity {
     private int finishingHour;
     private int finishingMinute;
     private int totalWorkingTimeInSeconds;
+    private static int clicksOnProgressBar = 0;
+    private static boolean brokenProgressBar = false;
 
 
     @Override
@@ -42,10 +49,9 @@ public class MainActivity extends MyBaseActivity {
 
 
         initialize();
-
         runTimer();
 
-
+        // set long click on progress bar
         ConstraintLayout cl = findViewById(R.id.clProgressBar);
         cl.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -94,8 +100,7 @@ public class MainActivity extends MyBaseActivity {
 
 
     @SuppressLint("DefaultLocale")
-    public void setTimeAndGain() throws ParseException {
-
+    private void setTimeAndGain() throws ParseException {
 
         // Get time
         Calendar calendar = Calendar.getInstance();
@@ -133,8 +138,6 @@ public class MainActivity extends MyBaseActivity {
         int compareStarting = currentTimeFormatted.compareTo(startingTimeFormatted); // compareStarting < 0 if currentTime < startingTime
         int compareFinishing = currentTimeFormatted.compareTo(finishingTimeFormatted);
 
-        //Log.d("MainActivity", "compareStarting: " + compareStarting);
-        //Log.d("MainActivity", "compareFinishing: " + compareFinishing);
 
         // if it is working time
         if(compareStarting >0 & compareFinishing < 0) {
@@ -152,9 +155,8 @@ public class MainActivity extends MyBaseActivity {
         else {
             remainingHour = totalWorkingTimeInSeconds / 3600;
             remainingMinute = (totalWorkingTimeInSeconds % 3600) / 60;
-            tvRemainingTime.setText(
-                    String.format("%02d", remainingHour) + " : " +
-                    String.format("%02d", remainingMinute) + " : 00");
+            String temp = String.format("%02d", remainingHour) + " : " + String.format("%02d", remainingMinute) + " : 00";
+            tvRemainingTime.setText(temp);
             gain = 0;
             counter = 0;
         }
@@ -165,8 +167,7 @@ public class MainActivity extends MyBaseActivity {
     }
 
 
-
-    public void checkDay() { // check if weekend
+    private void checkDay() { // check if weekend
 
         SharedPreferences sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         boolean workingWeekend = Boolean.parseBoolean(sp.getString(SharedConst.WORKING_WEEKEND, "false"));
@@ -186,9 +187,40 @@ public class MainActivity extends MyBaseActivity {
 
     public void rotateProgressBar(View view) {
         int randomRotation = new Random().nextInt(720) -360;
-        int randomDuration = new Random().nextInt(1900) + 100;
+        long randomDuration = 2*Math.abs(randomRotation);
 
         view.animate().rotationBy(randomRotation).setDuration(randomDuration);
 
+        clicksOnProgressBar++;
+
+        if (clicksOnProgressBar >= 5) { // 20
+            trollProgressBar(view);
+        }
+//        else if (clicksOnProgressBar >= 15) {
+//            Toast.makeText(this, String.valueOf(clicksOnProgressBar), Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+
+    private void trollProgressBar(View view) {
+        view.animate().rotationBy(720).setDuration(300);
+        view.animate().translationYBy(-2000).setDuration(300);
+
+        tvBrokenPb = findViewById(R.id.tvBrokenPb);
+        tvBrokenPb.animate().alpha(1).setDuration(3000);
+        brokenProgressBar = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (brokenProgressBar) {
+
+            clProgressBar = findViewById(R.id.clProgressBar);
+            tvBrokenPb = findViewById(R.id.tvBrokenPb);
+
+            clProgressBar.setTranslationY(-2000);
+            tvBrokenPb.setAlpha(1);
+        }
     }
 }

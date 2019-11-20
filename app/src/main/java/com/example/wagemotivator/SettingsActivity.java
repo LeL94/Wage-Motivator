@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private EditText wageEditText;
+    private EditText etWage;
     private TextView tvStartingHour;
     private TextView tvStartingMinute;
     private TextView tvFinishingHour;
@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void initialize() {
 
         // Assign attributes
-        wageEditText = findViewById(R.id.wageEditText);
+        etWage = findViewById(R.id.etWage);
         tvStartingHour = findViewById(R.id.tvStartingHour);
         tvStartingMinute = findViewById(R.id.tvStartingMinute);
         tvFinishingHour = findViewById(R.id.tvFinishingHour);
@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
         sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
 
         // Initialize text views
-        wageEditText.setText(sp.getString(SharedConst.DAILY_WAGE, "0"));
+        etWage.setText(sp.getString(SharedConst.DAILY_WAGE, "0"));
         tvStartingHour.setText(sp.getString(SharedConst.STARTING_HOUR, "9"));
         tvStartingMinute.setText(sp.getString(SharedConst.STARTING_MINUTE, "00"));
         tvFinishingHour.setText(sp.getString(SharedConst.FINISHING_HOUR, "18"));
@@ -94,7 +94,13 @@ public class SettingsActivity extends AppCompatActivity {
     public void saveSettings(View view) {
         SharedPreferences.Editor editor = sp.edit();
 
-        editor.putString(SharedConst.DAILY_WAGE, wageEditText.getText().toString());
+        // avoid crash if wage is empty
+        if (etWage.getText().toString().trim().equals("")) {
+            editor.putString(SharedConst.DAILY_WAGE, "0");
+        } else {
+            editor.putString(SharedConst.DAILY_WAGE, etWage.getText().toString());
+        }
+
         editor.putString(SharedConst.STARTING_HOUR, tvStartingHour.getText().toString());
         editor.putString(SharedConst.STARTING_MINUTE, tvStartingMinute.getText().toString());
         editor.putString(SharedConst.FINISHING_HOUR, tvFinishingHour.getText().toString());

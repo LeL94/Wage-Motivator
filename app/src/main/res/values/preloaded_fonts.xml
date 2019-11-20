@@ -2,5 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/autour_one</item>
+        <item>@font/bowlby_one_sc</item>
+        <item>@font/stoke_light</item>
     </array>
 </resources>
