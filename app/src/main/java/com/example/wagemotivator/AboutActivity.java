@@ -20,11 +20,11 @@ public class AboutActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("About");
 
 
-        WebView wbAbout = findViewById(R.id.wbAbout);
-        wbAbout.loadUrl("file:///android_asset/about1.html");
+//        WebView wbAbout = findViewById(R.id.wbAbout);
+//        wbAbout.loadUrl("file:///android_asset/about1.html");
 
-//        TextView tvAbout = findViewById(R.id.tvAbout);
-//        Spanned aboutText = Html.fromHtml("<h1>Wage Motivator</h1>" + getString(R.string.about_text));
-//        tvAbout.setText(aboutText);
+        TextView tvAbout = findViewById(R.id.tvAbout);
+        Spanned aboutText = Html.fromHtml("<h1>Wage Motivator</h1>" + getString(R.string.about_text));
+        tvAbout.setText(aboutText);
     }
 }

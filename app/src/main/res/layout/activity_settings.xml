@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:background="@drawable/bg_yellow">
 
     <TextView
         android:id="@+id/textView5"
