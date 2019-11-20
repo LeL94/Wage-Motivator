@@ -8,11 +8,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.wagemotivator.AboutActivity;
 import com.example.wagemotivator.R;
 import com.example.wagemotivator.SettingsActivity;
 
 
-public class MyBaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,7 +30,7 @@ public class MyBaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // SETTINGS
             case R.id.item_settings:
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             // SHARE
@@ -49,7 +51,8 @@ public class MyBaseActivity extends AppCompatActivity {
 
             // ABOUT US
             case R.id.item_about:
-                Toast.makeText(this, "...working on it...", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AboutActivity.class));
+                //Toast.makeText(this, "...working on it...", Toast.LENGTH_SHORT).show();
                 return true;
         }
 

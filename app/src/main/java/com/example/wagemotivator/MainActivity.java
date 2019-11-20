@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.*;
-import com.example.wagemotivator.util.MyBaseActivity;
+import com.example.wagemotivator.util.BaseActivity;
 import com.example.wagemotivator.util.SharedConst;
 
 
@@ -21,14 +20,13 @@ import java.util.Date;
 import java.util.Random;
 
 
-public class MainActivity extends MyBaseActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView tvRemainingTime;
     private TextView gainText;
     private ProgressBar progressBar;
     private TextView tvPercentage;
     private TextView tvBrokenPb;
-    private ConstraintLayout clProgressBar;
 
     private double dailyWage;
     private int startingHour;
@@ -186,14 +184,17 @@ public class MainActivity extends MyBaseActivity {
 
 
     public void rotateProgressBar(View view) {
-        int randomRotation = new Random().nextInt(720) -360;
-        long randomDuration = 2*Math.abs(randomRotation);
+        int randomRotation = new Random().nextInt(630) + 90;
+        long randomDuration = randomRotation;
+
+        if (Math.random() >= 0.5) // 50% to have negative rotation
+            randomRotation *= -1;
 
         view.animate().rotationBy(randomRotation).setDuration(randomDuration);
 
         clicksOnProgressBar++;
 
-        if (clicksOnProgressBar >= 5) { // 20
+        if (clicksOnProgressBar >= 42) {
             trollProgressBar(view);
         }
 //        else if (clicksOnProgressBar >= 15) {
@@ -211,12 +212,15 @@ public class MainActivity extends MyBaseActivity {
         brokenProgressBar = true;
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        // if progress bar is broken, update UI
         if (brokenProgressBar) {
 
-            clProgressBar = findViewById(R.id.clProgressBar);
+            ConstraintLayout clProgressBar = findViewById(R.id.clProgressBar);
             tvBrokenPb = findViewById(R.id.tvBrokenPb);
 
             clProgressBar.setTranslationY(-2000);

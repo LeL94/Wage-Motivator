@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_money_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".AboutActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".WeekendActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
