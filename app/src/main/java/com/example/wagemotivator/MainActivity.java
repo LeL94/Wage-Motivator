@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.text.ParseException;
@@ -14,8 +15,6 @@ import java.util.Calendar;
 import android.os.*;
 import com.example.wagemotivator.util.BaseActivity;
 import com.example.wagemotivator.util.SharedConst;
-
-
 import java.util.Date;
 import java.util.Random;
 
@@ -23,6 +22,7 @@ import java.util.Random;
 public class MainActivity extends BaseActivity {
 
     private TextView tvRemainingTime;
+    private TextView tvRemainingTimeShadow;
     private TextView gainText;
     private ProgressBar progressBar;
     private TextView tvPercentage;
@@ -41,10 +41,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        checkDay();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        checkDay();
 
 
         initialize();
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity {
         // Get references from layout
         SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         tvRemainingTime = findViewById(R.id.tvRemainingTime);
+        tvRemainingTimeShadow = findViewById(R.id.tvRemainingTimeShadow);
         gainText = findViewById(R.id.gainText);
         progressBar = findViewById(R.id.progressBar);
         tvPercentage = findViewById(R.id.tvPercentage);
@@ -121,6 +123,7 @@ public class MainActivity extends BaseActivity {
         @SuppressLint("DefaultLocale")
         String remainingTime = remainingHour + " : " + String.format("%02d", remainingMinute) + " : " + String.format("%02d", remainingSecond);
         tvRemainingTime.setText(remainingTime);
+        tvRemainingTimeShadow.setText(remainingTime);
 
         // Timer
         Date date = new Date();
@@ -146,6 +149,7 @@ public class MainActivity extends BaseActivity {
         // if work is over
         else if (compareFinishing >= 0) {
             tvRemainingTime.setText("00 : 00 : 00");
+            tvRemainingTimeShadow.setText("00 : 00 : 00");
             gain = dailyWage;
             counter = 100;
         }
@@ -156,6 +160,7 @@ public class MainActivity extends BaseActivity {
             remainingMinute = (totalWorkingTimeInSeconds % 3600) / 60;
             String temp = String.format("%02d", remainingHour) + " : " + String.format("%02d", remainingMinute) + " : 00";
             tvRemainingTime.setText(temp);
+            tvRemainingTimeShadow.setText(temp);
             gain = 0;
             counter = 0;
         }
@@ -168,14 +173,48 @@ public class MainActivity extends BaseActivity {
 
     private void checkDay() { // check if weekend
 
+        Calendar calendar = Calendar.getInstance();
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+        ImageView ivPlanet = findViewById(R.id.ivPlanet);
+
+
+        switch (today) {
+            case Calendar.MONDAY:
+                ivPlanet.setImageResource(R.drawable.planet_moon);
+                break;
+
+            case Calendar.TUESDAY:
+                ivPlanet.setImageResource(R.drawable.planet_mars);
+                break;
+
+            case Calendar.WEDNESDAY:
+                ivPlanet.setImageResource(R.drawable.planet_mercury);
+                break;
+
+            case Calendar.THURSDAY:
+                ivPlanet.setImageResource(R.drawable.planet_jupiter);
+                break;
+
+            case Calendar.FRIDAY:
+                ivPlanet.setImageResource(R.drawable.planet_venus);
+                break;
+
+            case Calendar.SATURDAY:
+                ivPlanet.setImageResource(R.drawable.planet_saturn);
+                break;
+
+            case Calendar.SUNDAY:
+                ivPlanet.setImageResource(R.drawable.planet_sun);
+                break;
+        }
+
+
         SharedPreferences sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         boolean workingWeekend = Boolean.parseBoolean(sp.getString(SharedConst.WORKING_WEEKEND, "false"));
 
         if(!workingWeekend) {
 
-            Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_WEEK);
-            if (day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+            if (today == Calendar.SATURDAY || today == Calendar.SUNDAY) {
                 finish();
                 startActivity(new Intent(MainActivity.this, WeekendActivity.class));
             }

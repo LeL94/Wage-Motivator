@@ -1,7 +1,6 @@
 package com.example.wagemotivator.util;
 
 
-
 public class SharedConst {
 
     public static final String SHARED_PREFS = "sharedPrefs";
