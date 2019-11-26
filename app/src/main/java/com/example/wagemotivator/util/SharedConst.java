@@ -10,5 +10,6 @@ public class SharedConst {
     public static final String FINISHING_HOUR = "finishingHour";
     public static final String FINISHING_MINUTE = "finishingMinute";
     public static final String WORKING_WEEKEND = "workingWeekend";
+    public static final String PLANET_ROTATION = "planetRotation";
 
 }

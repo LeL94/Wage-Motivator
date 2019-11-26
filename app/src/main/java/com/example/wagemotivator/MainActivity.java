@@ -23,10 +23,13 @@ public class MainActivity extends BaseActivity {
 
     private TextView tvRemainingTime;
     private TextView tvRemainingTimeShadow;
-    private TextView gainText;
+    private TextView tvGainText;
+    private TextView tvGainTextShadow;
     private ProgressBar progressBar;
     private TextView tvPercentage;
     private TextView tvBrokenPb;
+    private ImageView ivPlanet;
+    private SharedPreferences sp;
 
     private double dailyWage;
     private int startingHour;
@@ -43,9 +46,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        checkDay();
 
 
         initialize();
@@ -66,21 +66,27 @@ public class MainActivity extends BaseActivity {
 
     private void initialize() {
         // Get references from layout
-        SharedPreferences sharedPreferences = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
+        sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
         tvRemainingTime = findViewById(R.id.tvRemainingTime);
         tvRemainingTimeShadow = findViewById(R.id.tvRemainingTimeShadow);
-        gainText = findViewById(R.id.gainText);
+        tvGainText = findViewById(R.id.gainText);
+        tvGainTextShadow = findViewById(R.id.gainTextShadow);
         progressBar = findViewById(R.id.progressBar);
         tvPercentage = findViewById(R.id.tvPercentage);
+        ivPlanet = findViewById(R.id.ivPlanet);
+        sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
 
         // Initialize
-        dailyWage = Double.parseDouble(sharedPreferences.getString(SharedConst.DAILY_WAGE, "0"));
-        startingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_HOUR, "9"));
-        startingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.STARTING_MINUTE, "0"));
-        finishingHour = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_HOUR, "18"));
-        finishingMinute = Integer.parseInt(sharedPreferences.getString(SharedConst.FINISHING_MINUTE, "0"));
+        dailyWage = Double.parseDouble(sp.getString(SharedConst.DAILY_WAGE, "0"));
+        startingHour = Integer.parseInt(sp.getString(SharedConst.STARTING_HOUR, "9"));
+        startingMinute = Integer.parseInt(sp.getString(SharedConst.STARTING_MINUTE, "0"));
+        finishingHour = Integer.parseInt(sp.getString(SharedConst.FINISHING_HOUR, "18"));
+        finishingMinute = Integer.parseInt(sp.getString(SharedConst.FINISHING_MINUTE, "0"));
         // (finishingHour*3600 + finishingMinute*60) - (startingHour*3600 + startingMinute*60);
         totalWorkingTimeInSeconds = (finishingHour-startingHour)*3600 + (finishingMinute-startingMinute)*60;
+
+        float savedRotation = Float.parseFloat(sp.getString(SharedConst.PLANET_ROTATION, "0"));
+        ivPlanet.setRotation(savedRotation);
     }
 
 
@@ -90,7 +96,10 @@ public class MainActivity extends BaseActivity {
         handler.postDelayed(new Runnable(){
             public void run(){
                 try {
+                    checkDay();
                     setTimeAndGain();
+                    processPlanetRotation();
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -165,7 +174,8 @@ public class MainActivity extends BaseActivity {
             counter = 0;
         }
 
-        gainText.setText(String.format("%.3f", gain));
+        tvGainText.setText(String.format("%.3f", gain));
+        tvGainTextShadow.setText(String.format("%.3f", gain));
         progressBar.setProgress(counter);
         tvPercentage.setText(counter+"%");
     }
@@ -175,7 +185,6 @@ public class MainActivity extends BaseActivity {
 
         Calendar calendar = Calendar.getInstance();
         int today = calendar.get(Calendar.DAY_OF_WEEK);
-        ImageView ivPlanet = findViewById(R.id.ivPlanet);
 
 
         switch (today) {
@@ -257,6 +266,9 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+        float savedRotation = Float.parseFloat(sp.getString(SharedConst.PLANET_ROTATION, "0"));
+        ivPlanet.setRotation(savedRotation);
+
         // if progress bar is broken, update UI
         if (brokenProgressBar) {
 
@@ -266,5 +278,38 @@ public class MainActivity extends BaseActivity {
             clProgressBar.setTranslationY(-2000);
             tvBrokenPb.setAlpha(1);
         }
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            View decorView = getWindow().getDecorView();
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
+
+        }
+    }
+
+
+    public void processPlanetRotation() {
+        ivPlanet.animate().rotationBy((float) 0.1).setDuration(1000);
+
+        // save rotation value to shared preferences
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(SharedConst.PLANET_ROTATION, Float.toString(ivPlanet.getRotation()));
+        editor.apply();
+
+        //System.out.println(ivPlanet.getRotation());
+        //ivPlanet.animate().translationY(-210);
+        //int[] location = new int[2];
+        //ivPlanet.getLocationInWindow(location);
+        //System.out.println(location[0] + ", " + location[1]);
     }
 }
