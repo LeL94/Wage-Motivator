@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wagemotivator">
+    package="com.wagemotivator.wagemotivator">
 
     <application
         android:allowBackup="true"
@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AboutActivity"
+        <activity android:name="com.wagemotivator.wagemotivator.AboutActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName="com.wagemotivator.wagemotivator.MainActivity"/>
         <activity
-            android:name=".WeekendActivity"
+            android:name="com.wagemotivator.wagemotivator.WeekendActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.wagemotivator.wagemotivator.SettingsActivity"
+            android:parentActivityName="com.wagemotivator.wagemotivator.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.wagemotivator.wagemotivator.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,11 +1,10 @@
-package com.example.wagemotivator;
+package com.wagemotivator.wagemotivator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import java.util.Objects;

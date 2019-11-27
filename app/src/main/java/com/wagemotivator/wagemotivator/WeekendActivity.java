@@ -1,8 +1,8 @@
-package com.example.wagemotivator;
+package com.wagemotivator.wagemotivator;
 
 import android.os.Bundle;
 
-import com.example.wagemotivator.util.BaseActivity;
+import com.wagemotivator.wagemotivator.util.BaseActivity;
 
 public class WeekendActivity extends BaseActivity {
 

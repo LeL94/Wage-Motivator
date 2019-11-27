@@ -6,6 +6,7 @@
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">#000000</item>
+        <item name="android:textColor">#000000</item>
         <item name="android:fontFamily">@font/stoke_light</item>
     </style>
 

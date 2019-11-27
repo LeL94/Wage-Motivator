@@ -1,4 +1,4 @@
-package com.example.wagemotivator;
+package com.wagemotivator.wagemotivator;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.TimePickerDialog;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.wagemotivator.util.SharedConst;
+import com.wagemotivator.wagemotivator.util.SharedConst;
 
 import java.util.Objects;
 

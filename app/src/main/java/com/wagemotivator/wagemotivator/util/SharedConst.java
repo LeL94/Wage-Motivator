@@ -1,4 +1,4 @@
-package com.example.wagemotivator.util;
+package com.wagemotivator.wagemotivator.util;
 
 
 public class SharedConst {

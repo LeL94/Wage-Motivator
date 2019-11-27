@@ -1,4 +1,4 @@
-package com.example.wagemotivator;
+package com.wagemotivator.wagemotivator;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
@@ -13,8 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.*;
-import com.example.wagemotivator.util.BaseActivity;
-import com.example.wagemotivator.util.SharedConst;
+import com.wagemotivator.wagemotivator.util.BaseActivity;
+import com.wagemotivator.wagemotivator.util.SharedConst;
 import java.util.Date;
 import java.util.Random;
 
@@ -243,7 +243,7 @@ public class MainActivity extends BaseActivity {
 
         clicksOnProgressBar++;
 
-        if (clicksOnProgressBar >= 42) {
+        if (clicksOnProgressBar >= 5) {
             trollProgressBar(view);
         }
 //        else if (clicksOnProgressBar >= 15) {
@@ -270,6 +270,7 @@ public class MainActivity extends BaseActivity {
         ivPlanet.setRotation(savedRotation);
 
         // if progress bar is broken, update UI
+        clicksOnProgressBar = 0;
         if (brokenProgressBar) {
 
             ConstraintLayout clProgressBar = findViewById(R.id.clProgressBar);

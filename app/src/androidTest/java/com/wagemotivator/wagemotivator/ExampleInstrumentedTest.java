@@ -1,4 +1,4 @@
-package com.example.wagemotivator;
+package com.wagemotivator.wagemotivator;
 
 import android.content.Context;
 
