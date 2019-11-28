@@ -13,13 +13,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.*;
-import com.wagemotivator.wagemotivator.util.BaseActivity;
+
+import com.wagemotivator.wagemotivator.util.ActivityWithSettings;
+import com.wagemotivator.wagemotivator.util.Config;
 import com.wagemotivator.wagemotivator.util.SharedConst;
 import java.util.Date;
 import java.util.Random;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends ActivityWithSettings {
 
     private TextView tvRemainingTime;
     private TextView tvRemainingTimeShadow;
@@ -50,6 +52,7 @@ public class MainActivity extends BaseActivity {
 
         initialize();
         runTimer();
+
 
         // set long click on progress bar
         ConstraintLayout cl = findViewById(R.id.clProgressBar);
@@ -201,6 +204,7 @@ public class MainActivity extends BaseActivity {
                 break;
 
             case Calendar.THURSDAY:
+                // TODO bug with my huawei bar lags when rotating
                 ivPlanet.setImageResource(R.drawable.planet_jupiter);
                 break;
 
@@ -243,7 +247,7 @@ public class MainActivity extends BaseActivity {
 
         clicksOnProgressBar++;
 
-        if (clicksOnProgressBar >= 5) {
+        if (clicksOnProgressBar >= Config.CLICKS_TO_BREAK_PROGRESS_BAR) {
             trollProgressBar(view);
         }
 //        else if (clicksOnProgressBar >= 15) {
@@ -278,23 +282,6 @@ public class MainActivity extends BaseActivity {
 
             clProgressBar.setTranslationY(-2000);
             tvBrokenPb.setAlpha(1);
-        }
-    }
-
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            View decorView = getWindow().getDecorView();
-//            decorView.setSystemUiVisibility(
-//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
-
         }
     }
 

@@ -1,6 +1,5 @@
 package com.wagemotivator.wagemotivator;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +11,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.wagemotivator.wagemotivator.util.BaseActivity;
 import com.wagemotivator.wagemotivator.util.SharedConst;
 
 import java.util.Objects;
 
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     private EditText etWage;
     private TextView tvStartingHour;

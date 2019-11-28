@@ -2,9 +2,10 @@ package com.wagemotivator.wagemotivator;
 
 import android.os.Bundle;
 
+import com.wagemotivator.wagemotivator.util.ActivityWithSettings;
 import com.wagemotivator.wagemotivator.util.BaseActivity;
 
-public class WeekendActivity extends BaseActivity {
+public class WeekendActivity extends ActivityWithSettings {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

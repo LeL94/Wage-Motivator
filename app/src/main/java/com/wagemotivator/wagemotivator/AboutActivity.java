@@ -1,15 +1,15 @@
 package com.wagemotivator.wagemotivator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.TextView;
 
+import com.wagemotivator.wagemotivator.util.BaseActivity;
+
 import java.util.Objects;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
