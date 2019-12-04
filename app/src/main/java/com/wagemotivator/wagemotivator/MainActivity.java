@@ -18,6 +18,7 @@ import com.wagemotivator.wagemotivator.util.ActivityWithSettings;
 import com.wagemotivator.wagemotivator.util.Config;
 import com.wagemotivator.wagemotivator.util.SharedConst;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -48,9 +49,10 @@ public class MainActivity extends ActivityWithSettings {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Objects.requireNonNull(getSupportActionBar()).setTitle("WM");
 
         initialize();
+        checkDay();
         runTimer();
 
 
@@ -99,7 +101,6 @@ public class MainActivity extends ActivityWithSettings {
         handler.postDelayed(new Runnable(){
             public void run(){
                 try {
-                    checkDay();
                     setTimeAndGain();
                     processPlanetRotation();
 
@@ -189,6 +190,9 @@ public class MainActivity extends ActivityWithSettings {
         Calendar calendar = Calendar.getInstance();
         int today = calendar.get(Calendar.DAY_OF_WEEK);
 
+        SharedPreferences sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
+        boolean workingWeekend = Boolean.parseBoolean(sp.getString(SharedConst.WORKING_WEEKEND, "false"));
+
 
         switch (today) {
             case Calendar.MONDAY:
@@ -213,17 +217,18 @@ public class MainActivity extends ActivityWithSettings {
                 break;
 
             case Calendar.SATURDAY:
-                ivPlanet.setImageResource(R.drawable.planet_saturn);
+                if (workingWeekend)
+                    ivPlanet.setImageResource(R.drawable.planet_saturn);
                 break;
 
             case Calendar.SUNDAY:
-                ivPlanet.setImageResource(R.drawable.planet_sun);
+                if (workingWeekend)
+                    ivPlanet.setImageResource(R.drawable.planet_sun);
                 break;
+            default:
+                // do nothing
         }
 
-
-        SharedPreferences sp = getSharedPreferences(SharedConst.SHARED_PREFS, MODE_PRIVATE);
-        boolean workingWeekend = Boolean.parseBoolean(sp.getString(SharedConst.WORKING_WEEKEND, "false"));
 
         if(!workingWeekend) {
 
